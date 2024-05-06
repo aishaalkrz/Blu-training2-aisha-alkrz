@@ -1,5 +1,7 @@
 package com.aisha.Project_backEnd;
 
+import java.util.List;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
@@ -20,7 +22,14 @@ public class App {
         Session session = sf.openSession();
         session.beginTransaction();
 
-          System.out.println("Successfuly");
+        // Fetch all students
+        List<Student> students = session.createQuery("from Student", Student.class).getResultList();
+
+        // Print retrieved students
+        System.out.println("Retrieved students:");
+        for (Student student : students) {
+            System.out.println(student);
+        }
             
             session.getTransaction().commit();
             session.close();
