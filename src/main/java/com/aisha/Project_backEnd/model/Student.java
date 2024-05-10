@@ -1,6 +1,5 @@
-package com.aisha.Project_backEnd;
+package com.aisha.Project_backEnd.model;
 
-import org.springframework.boot.SpringApplication;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -69,11 +68,6 @@ public class Student {
 	@Override
 	public String toString() {
 		return "Student [id=" + id + ", firstName=" + firstName + ", lastName=" + lastName + ", email=" + email + "]";
-	}
-	public static void main(String[] args) {
-
-		SpringApplication.run(App.class, args);
-
 	}
 	
 }

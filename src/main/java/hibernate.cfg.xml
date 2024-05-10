@@ -12,8 +12,8 @@
 <property name="hibernate.connection.username">root</property>
 <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
 <property name="hibernate.show_sql">true</property>
-<property name="hibernate.hbm2dd1.auto">update</property>
-	<mapping class="com.aisha.Project_backEnd.Student" />
+<property name="hibernate.hbm2ddl.auto">update</property>
+	<mapping class="com.aisha.Project_backEnd.model.Book" />
 </session-factory>
 
 
