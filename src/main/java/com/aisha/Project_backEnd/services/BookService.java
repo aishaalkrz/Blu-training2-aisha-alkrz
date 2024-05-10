@@ -23,7 +23,7 @@ public class BookService {
         this.sessionFactory = sessionFactory;
     }
 
-    public Book createBook(Book book) {
+    public Book create(Book book) {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
 
@@ -35,7 +35,7 @@ public class BookService {
         return book;
     }
     
-    public List<Book> getAllBooks() {
+    public List<Book> getAll() {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
 
@@ -47,7 +47,7 @@ public class BookService {
         return allBooks;
     }
     
-    public Book getBookById(int id) {
+    public Book getById(int id) {
         Session session = sessionFactory.openSession();
         Transaction transaction = session.beginTransaction();
 
@@ -79,7 +79,19 @@ public class BookService {
             return matchingBooks;
         }
     }
+    public void deleteById(int id) {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
 
+        Book bookToDelete = session.get(Book.class, id);
+
+        if (bookToDelete != null) {
+            session.remove(bookToDelete); // Using the preferred delete method
+        }
+
+        transaction.commit();
+        session.close();
+          }
 }
 
 
