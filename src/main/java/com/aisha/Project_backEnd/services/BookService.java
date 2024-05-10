@@ -1,5 +1,7 @@
 package com.aisha.Project_backEnd.services;
 
+import java.util.List;
+
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -28,6 +30,19 @@ public class BookService {
 
         return book;
     }
+    
+    public List<Book> getAllBooks() {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+
+        List<Book> allBooks = session.createQuery("FROM Book", Book.class).list();
+
+        transaction.commit();
+        session.close();
+
+        return allBooks;
+    }
+
 }
 
 
