@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.aisha.Project_backEnd.model.Book;
@@ -31,30 +32,42 @@ public class BookController {
 	    @PostMapping("/post")
 	    public ResponseEntity<Book> createBook(@RequestBody Book book) {
 	        Book createdBook = bookService.createBook(book);
-	        return ResponseEntity.ok(createdBook);
+	        if (createdBook == null) {
+	             return ResponseEntity.noContent().build();
+	         } else {
+	             return ResponseEntity.ok(createdBook);
+	         }
 	    }
 	    
 	    @GetMapping("/get")
 	    public ResponseEntity<List<Book>> getAllBooks() {
 	        List<Book> books = bookService.getAllBooks();
-	        return new ResponseEntity<>(books, HttpStatus.OK);
+	        if (books.isEmpty()) {
+	             return ResponseEntity.noContent().build();
+	         } else {
+	             return ResponseEntity.ok(books);
+	         }
 	    }
 
 	    
 	    @GetMapping("/{id}")
 	    public ResponseEntity<Book> getBookById(@PathVariable int id) {
-	        try {
 	            Book book = bookService.getBookById(id);
-	            if (book != null) {
-	                return ResponseEntity.ok(book);
-	            } else {
-	                return ResponseEntity.notFound().build();
-	            }
-	        } catch (Exception e) {
-	            // Handle exceptions (consider logging and returning a more informative error response)
-	           System.out.println("Error fetching book with ID " + id + e); // Log the error for debugging
-	            return ResponseEntity.internalServerError().build(); // Return 500 Internal Server Error
-	        }
+	            if (book == null) {
+		             return ResponseEntity.noContent().build();
+		         } else {
+		             return ResponseEntity.ok(book);
+		         }
 	    }
+	    @GetMapping("/search")
+	    public ResponseEntity<List<Book>> searchBooks(@RequestParam("keyword") String keyword) {
+	    	 List<Book> foundBooks = bookService.searchBooks(keyword);
+	         if (foundBooks.isEmpty()) {
+	             return ResponseEntity.noContent().build();
+	         } else {
+	             return ResponseEntity.ok(foundBooks);
+	         }
+	    }
+
 
 }

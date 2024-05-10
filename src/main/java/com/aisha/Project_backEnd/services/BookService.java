@@ -9,6 +9,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.aisha.Project_backEnd.model.Book;
 
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Root;
+import jakarta.persistence.criteria.CriteriaBuilder;
+
 @Service
 public class BookService {
 
@@ -52,6 +56,28 @@ public class BookService {
         session.close();
 
         return (book);
+    }
+
+    public List<Book> searchBooks(String keyword) {
+        try (Session session = sessionFactory.openSession()) {
+            Transaction transaction = session.beginTransaction();
+
+            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder(); // Import added
+            CriteriaQuery<Book> criteriaQuery = criteriaBuilder.createQuery(Book.class);
+            Root<Book> root = criteriaQuery.from(Book.class);
+
+            criteriaQuery.select(root)
+                    .where(criteriaBuilder.or(
+                            criteriaBuilder.like(root.get("title"), "%" + keyword + "%"),
+                            criteriaBuilder.like(root.get("author"), "%" + keyword + "%")
+                    ));
+
+            List<Book> matchingBooks = session.createQuery(criteriaQuery).getResultList();
+
+            transaction.commit();
+
+            return matchingBooks;
+        }
     }
 
 }
