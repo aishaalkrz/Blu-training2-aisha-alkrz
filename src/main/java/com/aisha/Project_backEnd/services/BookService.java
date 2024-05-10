@@ -42,6 +42,17 @@ public class BookService {
 
         return allBooks;
     }
+    
+    public Book getBookById(int id) {
+        Session session = sessionFactory.openSession();
+        Transaction transaction = session.beginTransaction();
+
+        Book book = session.get(Book.class, id);
+        transaction.commit();
+        session.close();
+
+        return (book);
+    }
 
 }
 
